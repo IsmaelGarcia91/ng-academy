@@ -1,4 +1,5 @@
 import { Component, OnInit, Output , EventEmitter} from '@angular/core';
+import { UserService } from '../service/user.service';
 
 @Component({
   selector: 'app-user-filter',
@@ -8,14 +9,14 @@ import { Component, OnInit, Output , EventEmitter} from '@angular/core';
 export class UserFilterComponent implements OnInit {
 
   @Output() searchUser: EventEmitter<string> = new EventEmitter<string>();
-  constructor() { }
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
   }
 
   search (event: MouseEvent, text: string) {
     event.preventDefault();
-    this.searchUser.emit(text);
+    this.userService.filterUsers(text);
   }
 
 }

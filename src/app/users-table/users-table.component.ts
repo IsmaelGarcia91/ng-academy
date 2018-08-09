@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { User } from '../classes/user';
+import { UserService } from '../service/user.service';
 
 @Component({
   selector: 'app-users-table',
@@ -8,16 +9,18 @@ import { User } from '../classes/user';
 })
 export class UsersTableComponent implements OnInit {
 
-  @Input() users: Array<User>;
-  @Output() deleteUser: EventEmitter<User> = new EventEmitter<User>();
-
-  constructor() { }
+  private users: Array<User> = [];
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
+    this.users = this.userService.getUsers();
+    this.userService.subscribeToUsers().subscribe((users) => {
+      this.users = users;
+    });
   }
 
   deleteClick(user: User) {
-    this.deleteUser.emit(user);
+    this.userService.delete(user);
   }
 
 }
